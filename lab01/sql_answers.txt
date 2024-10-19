@@ -1,0 +1,62 @@
+
+-- Questão 1:
+
+select phoneRateType, DATEYEAR, sum(price)  from
+    facts inner join timedim on facts.id_time = timedim.id_time inner join phonerate on facts.id_phonerate = phonerate.id_phonerate
+    group by cube (phoneRateType, DATEYEAR)
+;
+
+
+
+-- Questão 2:
+
+select DATEMONTH, sum(price) as monthly_income, sum(numberofcalls), rank() over (order by sum(price) desc) from
+    facts inner join timedim on facts.id_time = timedim.id_time
+	group by DATEMONTH
+    ;
+
+
+-- Questão 3:
+
+
+select DATEMONTH,  sum(numberofcalls), rank() over (order by sum(numberofcalls) desc) from
+    facts inner join timedim on facts.id_time = timedim.id_time
+    where dateyear = 2003
+	group by DATEMONTH
+    ;
+
+
+-- Questão 4:
+
+SELECT
+    daydate,
+    SUM(price) AS daily_income,
+    AVG(SUM(price)) OVER (
+        ORDER BY daydate
+        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+    ) AS 3_days_avg
+FROM
+    facts
+INNER JOIN timedim ON facts.id_time = timedim.id_time
+WHERE
+    DATEMONTH = '07-2003'
+GROUP BY
+    daydate
+ORDER BY
+    daydate;
+
+
+
+-- Questão 5:
+
+
+select DATEMONTH,
+    sum(price) as monthly_income,
+    sum(sum(price)) over (partition by dateyear order by DATEMONTH
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) as cumulative
+from
+    facts inner join timedim on facts.id_time = timedim.id_time
+	group by DATEMONTH, dateyear
+    order by datemonth
+    ;
