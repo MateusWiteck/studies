@@ -34,7 +34,7 @@ SELECT
     AVG(SUM(price)) OVER (
         ORDER BY daydate
         ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
-    ) AS 3_days_avg
+    ) AS three_days_avg
 FROM
     facts
 INNER JOIN timedim ON facts.id_time = timedim.id_time
