@@ -1,0 +1,11 @@
+# MongoDB
+
+Primary node: do all write operations.
+Secondary node: replicates the primary oplog (operations log). If the primary is unavailable for the majority of the nodes (primary exceed a response threshold of 10 s) another node is elected (need configuration).
+
+*Arbiter: see if every node is up and running.
+
+
+Fault Tolerance
+
+
