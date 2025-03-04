@@ -1,4 +1,5 @@
 *.asv
 
-*DATA*/*
+*/DATA*/*
 *.JPEG
+*/train/*
